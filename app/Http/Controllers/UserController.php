@@ -8,25 +8,23 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    public function uploadAvatar(Request $request)
+    public function updateAvatar(Request $request)
     {
         $request->validate([
             'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $user = $request->user();
-        $avatar = $request->file('avatar');
-        $avatarPath = $avatar->store('avatars', 'public');
+        $user = auth()->user();
+        $path = $request->file('avatar')->store('avatars', 'public');
 
         // Удаление старого аватара, если он есть
         if ($user->avatar) {
             Storage::disk('public')->delete($user->avatar);
         }
 
-        $user->avatar = $avatarPath;
-        $user->save();
+        $user->update(['avatar' => $path]);
 
-        return response()->json(['message' => 'Avatar uploaded successfully', 'avatar_url' => asset('storage/' . $avatarPath)], 200);
+        return response()->json(['avatar_url' => $user->avatar_url], 200);
     }
 
     public function getUserProfile(Request $request)
