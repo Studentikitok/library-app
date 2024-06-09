@@ -8,6 +8,13 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
+use App\Http\Controllers\UserController;
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/user/avatar', [UserController::class, 'uploadAvatar']);
+    Route::get('/user/profile', [UserController::class, 'getUserProfile']);
+});
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
