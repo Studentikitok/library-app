@@ -17,7 +17,7 @@ class User extends Authenticatable
 
     protected $hidden = [
         'password', 'remember_token',
-    ];   
+    ];
 
     protected $appends = ['avatar_url'];
 
@@ -26,5 +26,15 @@ class User extends Authenticatable
     public function getAvatarUrlAttribute()
     {
         return $this->avatar ? asset('storage/' . $this->avatar) : null;
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isLibrarian()
+    {
+        return $this->role === 'librarian';
     }
 }
