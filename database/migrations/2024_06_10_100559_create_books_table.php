@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
     public function up(): void
     {
         Schema::create('books', function (Blueprint $table) {
@@ -16,7 +15,7 @@ return new class extends Migration
             $table->string('isbn')->unique();
             $table->text('description')->nullable();
             $table->string('language');
-            $table->timestamps();
+            $table->enum('status', ['available', 'reserved'])->default('available');
         });
     }
 

@@ -10,7 +10,7 @@ class Book extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'cover_image', 'isbn', 'description', 'language'
+        'title', 'cover_image', 'isbn', 'description', 'language', 'status'
     ];
 
     public $timestamps = false;
@@ -23,5 +23,10 @@ class Book extends Model
     public function genres()
     {
         return $this->belongsToMany(Genre::class);
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
     }
 }

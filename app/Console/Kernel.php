@@ -12,8 +12,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('reservations:update-statuses')->hourly();
     }
+
+    protected $commands = [
+        \App\Console\Commands\UpdateStatuses::class,
+    ];
 
     /**
      * Register the commands for the application.
