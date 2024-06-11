@@ -43,11 +43,11 @@ class BookController extends Controller
     {
         $book = Book::findOrFail($bookId);
 
-        $request->validate([
+        $validatedData = $request->validate([
             'title' => 'sometimes|string|max:255',
             'cover_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'isbn' => 'sometimes|string|unique:books,isbn' . $book->id,
-            'description' => 'sometimes|string',
+            'isbn' => 'sometimes|string|unique:books,isbn,' . $bookId,
+            'description' => 'sometimes|string|nullable',
             'language' => 'sometimes|string|max:255',
             'authors' => 'sometimes|array',
             'authors.*' => 'exists:authors,id',
@@ -56,14 +56,11 @@ class BookController extends Controller
         ]);
 
         if ($request->hasFile('cover_image')) {
-            if ($book->cover_image) {
-                Storage::disk('public')->delete($book->cover_image);
-            }
             $coverImagePath = $request->file('cover_image')->store('covers', 'public');
-            $book->cover_image = $coverImagePath;
+            $validatedData['cover_image'] = $coverImagePath;
         }
 
-        $book->update($request->only(['title', 'isbn', 'description', 'language']));
+        $book->fill($validatedData)->save();
 
         if ($request->has('authors')) {
             $book->authors()->sync($request->authors);
@@ -73,7 +70,9 @@ class BookController extends Controller
             $book->genres()->sync($request->genres);
         }
 
-        return response()->json($book, 200);
+        $book->refresh();
+
+        return response()->json(['message' => 'Book updated successfully.', 'book' => $book]);
     }
 
     public function deleteBook($bookId)

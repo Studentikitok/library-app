@@ -26,6 +26,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/librarian/create-book', [BookController::class, 'createBook']);
         Route::post('/librarian/create-author', [AuthorController::class, 'createAuthor']);
         Route::post('/librarian/create-genre', [GenreController::class, 'createGenre']);
+        Route::patch('/librarian/edit-book/{bookId}', [BookController::class, 'editBook']);
+        Route::delete('/librarian/delete-book/{bookId}', [BookController::class, 'deleteBook']);
         Route::put('/librarian/reservations/{reservationId}/manage', [ReservationController::class, 'updateReservationStatus']);
         Route::get('/librarian/reservations/auto-update-statuses', [ReservationController::class, 'autoUpdateStatuses']);
     });

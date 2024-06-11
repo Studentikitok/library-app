@@ -43,14 +43,14 @@ class ReservationController extends Controller
             $reservation->end_date = null;
         }
 
-        $reservation->status = $status;
-        $reservation->save();
-
         if ($status === 'accepted') {
             $reservation->book->status = 'reserved';
         } elseif ($status === 'rejected') {
             $reservation->book->status = 'available';
         }
+
+        $reservation->status = $status;
+        $reservation->save();
 
         $reservation->book->save();
 
