@@ -29,6 +29,5 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/librarian/edit-book/{bookId}', [BookController::class, 'editBook']);
         Route::delete('/librarian/delete-book/{bookId}', [BookController::class, 'deleteBook']);
         Route::put('/librarian/reservations/{reservationId}/manage', [ReservationController::class, 'updateReservationStatus']);
-        Route::get('/librarian/reservations/auto-update-statuses', [ReservationController::class, 'autoUpdateStatuses']);
     });
 });

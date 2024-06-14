@@ -17,12 +17,12 @@ class AuthController extends Controller
         ]);
 
         if (!Auth::attempt($request->only('login', 'password'))) {
-            return response()->json(['message' => 'Invalid login or password'], 401);
+            return response()->json(['message' => 'Неправильный логин или пароль'], 401);
         }
 
         $user = User::where('login', $request->login)->firstOrFail();
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json(['token' => $token, 'role' => $user->role], 200);
+        return response()->json(['message' => 'Вход выполнен','token' => $token, 'role' => $user->role], 200);
     }
 }

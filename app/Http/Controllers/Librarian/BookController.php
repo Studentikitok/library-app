@@ -36,7 +36,7 @@ class BookController extends Controller
         $book->authors()->sync($request->authors);
         $book->genres()->sync($request->genres);
 
-        return response()->json($book, 201);
+        return response()->json(['message' => 'Книга создана', $book], 201);
     }
 
     public function editBook(Request $request, $bookId)
@@ -72,7 +72,7 @@ class BookController extends Controller
 
         $book->refresh();
 
-        return response()->json(['message' => 'Book updated successfully.', 'book' => $book]);
+        return response()->json(['message' => 'Книга обновлена', 'book' => $book]);
     }
 
     public function deleteBook($bookId)
@@ -88,6 +88,6 @@ class BookController extends Controller
 
         $book->delete();
 
-        return response()->json(['message' => 'Книга удалена.'], 200);
+        return response()->json(['message' => 'Книга удалена'], 200);
     }
 }

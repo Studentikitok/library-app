@@ -16,15 +16,15 @@ class ReservationController extends Controller
         $book = Book::findOrFail($bookId);
 
         if ($book->status !== 'available') {
-            return response()->json(['message' => 'Book is not available for reservation'], 400);
+            return response()->json(['message' => 'Книга не может быть зарезервирована'], 400);
         }
 
         $reservation = Reservation::create([
             'book_id' => $book->id,
             'user_id' => Auth::id(),
             'status' => 'pending',
-            'start_date' => Carbon::now(),
-            'end_date' => Carbon::now()->addWeek(),
+            'start_date' => null,
+            'end_date' => null,
         ]);
 
         $book->status = 'reserved';
@@ -38,13 +38,10 @@ class ReservationController extends Controller
         $reservation = Reservation::findOrFail($reservationId);
         $status = $request->input('status');
 
-        if ($status === 'rejected') {
-            $reservation->start_date = null;
-            $reservation->end_date = null;
-        }
-
-        if ($status === 'accepted') {
+        if ($status === 'approved') {
             $reservation->book->status = 'reserved';
+            $reservation->start_date = Carbon::now();
+            $reservation->end_date = Carbon::now()->addWeek();
         } elseif ($status === 'rejected') {
             $reservation->book->status = 'available';
         }
@@ -54,24 +51,6 @@ class ReservationController extends Controller
 
         $reservation->book->save();
 
-        return response()->json(['message' => 'Статус заявки обновлён.', 'reservation' => $reservation]);
-    }
-
-    public function autoUpdateStatuses()
-    {
-        $now = Carbon::now();
-
-        Reservation::where('end_date', '<', $now)
-            ->where('status', 'accepted')
-            ->update(['status' => 'expired']);
-
-        $expiredReservations = Reservation::where('end_date', '<', $now)->get();
-
-        foreach ($expiredReservations as $reservation) {
-            $reservation->book->status = 'available';
-            $reservation->book->save();
-        }
-
-        return response()->json(['message' => 'Статусы книг и заявок обновлены.']);
+        return response()->json(['message' => 'Статус заявки обновлён', 'reservation' => $reservation]);
     }
 }
