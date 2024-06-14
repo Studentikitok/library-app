@@ -12,14 +12,17 @@ class AuthorController extends Controller
     public function createAuthor(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:genres',
+            'name' => 'required|string|max:255|unique:authors',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
-        } else {
-            $author = Author::create($validator);
-            return response()->json(['message' => 'Жанр создан', $author], 201);
-        }
+        } 
+
+        $author = Author::create([
+            'name' => $request->input('name')
+        ]);
+
+        return response()->json(['message' => 'Автор создан', $author], 201);
     }
 }

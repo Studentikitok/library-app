@@ -17,9 +17,12 @@ class GenreController extends Controller
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
-        } else {
-            $genre = Genre::create($validator);
-            return response()->json(['message' => 'Жанр создан', $genre], 201);
-        }
+        } 
+
+        $genre = Genre::create([
+            'name' => $request->input('name')
+        ]);
+        
+        return response()->json(['message' => 'Жанр создан', $genre], 201);
     }
 }
