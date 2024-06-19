@@ -36,7 +36,7 @@ class BookController extends Controller
         $book->authors()->sync($request->authors);
         $book->genres()->sync($request->genres);
 
-        return response()->json(['message' => 'Книга создана', $book], 201);
+        return response()->json(['message' => 'Книга создана', 'book' => $book], 201);
     }
 
     public function editBook(Request $request, $bookId)

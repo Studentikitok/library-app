@@ -23,6 +23,6 @@ class AuthorController extends Controller
             'name' => $request->input('name')
         ]);
 
-        return response()->json(['message' => 'Автор создан', $author], 201);
+        return response()->json(['message' => 'Автор создан', 'author' => $author], 201);
     }
 }

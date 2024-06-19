@@ -26,6 +26,6 @@ class UserManagementController extends Controller
             'role' => 'librarian',
         ]);
 
-        return response()->json(['message' => 'Библиотекарь создан', $user], 201);
+        return response()->json(['message' => 'Библиотекарь создан', 'user' => $user], 201);
     }
 }

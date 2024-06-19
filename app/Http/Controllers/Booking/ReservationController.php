@@ -44,6 +44,8 @@ class ReservationController extends Controller
             $reservation->end_date = Carbon::now()->addWeek();
         } elseif ($status === 'rejected') {
             $reservation->book->status = 'available';
+            $reservation->start_date = null;
+            $reservation->end_date = null;
         }
 
         $reservation->status = $status;

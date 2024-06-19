@@ -16,7 +16,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 });
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [LogoutController::class, 'logout']);
+    Route::get('/logout', [LogoutController::class, 'logout']);
     Route::post('/user/avatar', [UserController::class, 'updateAvatar']);
     Route::post('/books/{bookId}/reserve', [ReservationController::class, 'reserveBook']);
     Route::middleware('admin')->group(function () {

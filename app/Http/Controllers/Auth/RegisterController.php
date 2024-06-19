@@ -29,6 +29,6 @@ class RegisterController extends Controller
             'role' => 'user',
         ]);
 
-        return response()->json(['message' => 'Пользователь зарегистрирован', $user], 201);
+        return response()->json(['message' => 'Пользователь зарегистрирован', 'user' => $user], 201);
     }
 }

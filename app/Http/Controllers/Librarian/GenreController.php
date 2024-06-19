@@ -23,6 +23,6 @@ class GenreController extends Controller
             'name' => $request->input('name')
         ]);
         
-        return response()->json(['message' => 'Жанр создан', $genre], 201);
+        return response()->json(['message' => 'Жанр создан', 'genre' => $genre], 201);
     }
 }
