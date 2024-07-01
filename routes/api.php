@@ -18,7 +18,9 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/logout', [LogoutController::class, 'logout']);
     Route::post('/user/avatar', [UserController::class, 'updateAvatar']);
-    Route::post('/books/{bookId}/reserve', [ReservationController::class, 'reserveBook']);
+    Route::middleware('user')->group(function () {
+        Route::post('/books/{bookId}/reserve', [ReservationController::class, 'reserveBook']);
+    });
     Route::middleware('admin')->group(function () {
         Route::post('/admin/create-librarian', [UserManagementController::class, 'createLibrarian']);
     });
